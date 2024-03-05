@@ -5,8 +5,8 @@ using UnityEngine;
 public class TransitionGenerator : MonoBehaviour
 {
     [HideInInspector] public Transform end; //state at the end of the transition
-    private TransitionScript transitionScript; 
-    private StateGenerator stateGenerator; // Reference to the StateGenerator component.
+    protected TransitionScript transitionScript; 
+    protected StateGenerator stateGenerator; // Reference to the StateGenerator component.
     private EditState editState; //edit state script
     private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer
     //private bool exists = false; //check if the transition has been created
@@ -51,9 +51,10 @@ public class TransitionGenerator : MonoBehaviour
         else UnityEngine.Debug.Log(end.gameObject.name + " is the end state of the transition at first");*/
 
         /*ALWAYS CREATE TRANSTION GAME OBJECT (LINE RENDERER)*/
-        GameObject newTransition = Instantiate(transitionPrefab, transform.position, Quaternion.identity); 
+        GameObject newTransition = Instantiate(transitionPrefab, transform.position, Quaternion.identity); //instantiate the transition
         newTransition.transform.SetParent(transform); //set the transition as a child of the state
         transitionScript = newTransition.GetComponent<TransitionScript>();
+        //for(int i=0; i<transitionScript.states.Length; i++) UnityEngine.Debug.Log(transitionScript.states[i] + " is the state at position " + i);
         editState.EditStateOptions.SetActive(false);
 
         if(CountStates() < 2) CreateAutoTransition(); //if there are less than 2 states, only an auto transition can be created

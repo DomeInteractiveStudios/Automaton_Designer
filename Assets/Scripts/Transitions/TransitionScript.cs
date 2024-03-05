@@ -110,7 +110,7 @@ public class TransitionScript : MonoBehaviour
         newCondition.transform.Rotate(0, 0, 0);
         newCondition.transform.localScale = newCondition.transform.localScale/50;
         newCondition.transform.SetParent(content.transform);
-        if(conditionInput.text != "")
+        if(conditionInput.text != "")   
         {
             conList.Add(conditionInput.text); //add the condition to the list of conditions
             newCondition.GetComponent<TMP_Text>().text = conditionInput.text;

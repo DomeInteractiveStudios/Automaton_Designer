@@ -10,6 +10,7 @@ public class StateGenerator : MonoBehaviour
     private GameObject creationMenu;
     private GameObject statePrefab;
     private GameObject popUpWindow;
+    private Vector3 lastMousePos; //last mouse position before opening the pop up window
     [SerializeField] private TMP_InputField stateName; //STATE NAME INPUT FIELD
     [SerializeField] private TMP_Dropdown stateType; //0 = regular, 1 = final
     [SerializeField] private TMP_Text submitText; //0 = Create, 1 = Edit
@@ -54,6 +55,7 @@ public class StateGenerator : MonoBehaviour
     private void ShowCreationMenu() //SHOWS THE CREATE A NEW STATE BUTTON 
     {
         creationMenu.SetActive(true);
+        lastMousePos = creationMenu.transform.position;
         menuShown = true;
     }
 
@@ -91,7 +93,7 @@ public class StateGenerator : MonoBehaviour
     }
     private void CreateState() //CREATES A NEW STATE THAT DOES NOT EXIST
     {
-        GameObject newState = Instantiate(statePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject newState = Instantiate(statePrefab, lastMousePos, Quaternion.identity);
         statePrefabScript = newState.GetComponent<StateScript>();
         newState.transform.SetParent(stateHolder.transform);
         if(stateName.text == "") statePrefabScript.state.name = "State";
