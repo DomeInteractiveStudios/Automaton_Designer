@@ -8,14 +8,14 @@ public class TransitionGenerator : MonoBehaviour
     protected TransitionScript transitionScript; 
     protected StateGenerator stateGenerator; // Reference to the StateGenerator component.
     private EditState editState; //edit state script
-    private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer
+    private int i=0; //debugging purposes
+    private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint, newTransition; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer || new transition gameObject created
     //private bool exists = false; //check if the transition has been created
     public bool isDragging = false; //check if the transition is still being associated with an end state
     private RaycastHit2D hit; //raycast hit
     
     private void Awake()
     {
-        transitionPrefab = Resources.Load<GameObject>("Prefabs/Transition");
         editState = GetComponent<EditState>();
 
         stateGenerator = GameObject.Find("ScriptHolder").GetComponent<StateGenerator>(); // Get the StateGenerator script
@@ -46,12 +46,13 @@ public class TransitionGenerator : MonoBehaviour
     {
         /*"CLEAN" END POINT BUFFER*/
         end = null;
-
         /*if(end == null) UnityEngine.Debug.Log("End is null at the start");
         else UnityEngine.Debug.Log(end.gameObject.name + " is the end state of the transition at first");*/
 
         /*ALWAYS CREATE TRANSTION GAME OBJECT (LINE RENDERER)*/
-        GameObject newTransition = Instantiate(transitionPrefab, transform.position, Quaternion.identity); //instantiate the transition
+        transitionPrefab = Resources.Load<GameObject>("Prefabs/Transition");
+        newTransition = Instantiate(transitionPrefab, transform.position, Quaternion.identity); //instantiate the transition
+        newTransition.name = $"Transition_{i}"; //set the name of the transition
         newTransition.transform.SetParent(transform); //set the transition as a child of the state
         transitionScript = newTransition.GetComponent<TransitionScript>();
         //for(int i=0; i<transitionScript.states.Length; i++) UnityEngine.Debug.Log(transitionScript.states[i] + " is the state at position " + i);
@@ -60,10 +61,14 @@ public class TransitionGenerator : MonoBehaviour
         if(CountStates() < 2) CreateAutoTransition(); //if there are less than 2 states, only an auto transition can be created
         else
         { 
-            pointerFollower = transitionPrefab.transform.GetChild(0).gameObject; // Random object that follows the mouse pointer
-            middlePoint = transitionPrefab.transform.GetChild(1).gameObject; // Middle point of the line renderer
+            pointerFollower = newTransition.transform.GetChild(0).gameObject; // Random object that follows the mouse pointer
+            middlePoint = newTransition.transform.GetChild(1).gameObject; // Middle point of the line renderer
             isDragging = true;
         }
+
+        UnityEngine.Debug.Log("New transition is not null " + newTransition.name + $" Should be Transition_{i}");
+        i++; 
+        if(newTransition != null) newTransition = null; //"clean" the transition buffer
     }
 
     public void EndDragging()
