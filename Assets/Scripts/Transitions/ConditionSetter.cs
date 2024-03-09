@@ -16,6 +16,8 @@ public class ConditionSetter : MonoBehaviour
         {
             transScript.conditions[i] = list[i];
         }
+
+        //FIND A WAY TO CLEAN CONDITION BUFFER
     }
     
     public void GetConditions(string cond)
