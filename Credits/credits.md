@@ -15,4 +15,4 @@
 
 ## Special Thanks
 
-    Andrea Oggioni, Joele Ortore, Manuel Maiuolo
+    Andrea Oggioni, Joele Ortore, Manuel Maiuolo, Alexandru Nechita

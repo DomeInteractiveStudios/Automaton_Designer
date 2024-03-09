@@ -5,8 +5,9 @@ using UnityEngine;
 public class TransitionGenerator : MonoBehaviour
 {
     [HideInInspector] public Transform end; //state at the end of the transition
-    protected TransitionScript transitionScript; 
-    protected StateGenerator stateGenerator; // Reference to the StateGenerator component.
+    private TransitionScript transitionScript; 
+    private  StateGenerator stateGenerator; // Reference to the StateGenerator component.
+    private ConditionSetter condSetter; //Reference to the Condition Setter Script
     private EditState editState; //edit state script
     private int i=0; //debugging purposes
     private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint, newTransition; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer || new transition gameObject created
@@ -19,6 +20,7 @@ public class TransitionGenerator : MonoBehaviour
         editState = GetComponent<EditState>();
 
         stateGenerator = GameObject.Find("ScriptHolder").GetComponent<StateGenerator>(); // Get the StateGenerator script
+        condSetter = GameObject.Find("ScriptHolder").GetComponent<ConditionSetter>(); // Get the ConditionSetter script
         stateHolder = stateGenerator.stateHolder; // Get the stateHolder GameObject from the StateGenerator script
     }
 
@@ -54,7 +56,8 @@ public class TransitionGenerator : MonoBehaviour
         newTransition = Instantiate(transitionPrefab, transform.position, Quaternion.identity); //instantiate the transition
         newTransition.name = $"Transition_{i}"; //set the name of the transition
         newTransition.transform.SetParent(transform); //set the transition as a child of the state
-        transitionScript = newTransition.GetComponent<TransitionScript>();
+        transitionScript = newTransition.GetComponent<TransitionScript>(); 
+        condSetter.GetTransition(newTransition); 
         //for(int i=0; i<transitionScript.states.Length; i++) UnityEngine.Debug.Log(transitionScript.states[i] + " is the state at position " + i);
         editState.EditStateOptions.SetActive(false);
 
@@ -68,7 +71,7 @@ public class TransitionGenerator : MonoBehaviour
 
         UnityEngine.Debug.Log("New transition is not null " + newTransition.name + $" Should be Transition_{i}");
         i++; 
-        if(newTransition != null) newTransition = null; //"clean" the transition buffer
+        //if(newTransition != null) newTransition = null; //"clean" the transition buffer
     }
 
     public void EndDragging()

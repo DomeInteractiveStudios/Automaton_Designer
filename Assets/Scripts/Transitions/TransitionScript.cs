@@ -10,6 +10,7 @@ public class TransitionScript : MonoBehaviour
     [HideInInspector] public float midPointOffset; //offset of the middle point from the start and end points
     public string[] conditions; //list of conditions to be met for the state to follow this transition
     [HideInInspector] public bool isAuto = false, goUnder = false; //check if the transition is an auto transition || check if the middle point should go under the states
+    private ConditionSetter condSet; 
     private GameObject condPopUp, stateHolder, conditionText; //condition pop up window || state holder || condition text to add to the condition list scroll area
     private LineRenderer lineRenderer; //transition line
     private bool belowMinum = false; //check if the middle point is below the minimum offset
@@ -25,6 +26,7 @@ public class TransitionScript : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         condPopUp = GameObject.Find("FixedUI").transform.Find("Canvas").transform.Find("CondPopUp-Window").gameObject;
         condPopUp.SetActive(false);
+        condSet = GameObject.Find("ScriptHolder").transform.GetComponent<ConditionSetter>(); 
         stateHolder = GameObject.Find("StateHolder");
         conditionText = Resources.Load<GameObject>("Prefabs/UI_Elements/ConditionText");
 
@@ -89,12 +91,7 @@ public class TransitionScript : MonoBehaviour
         condPopUp.SetActive(false);
         stateHolder.SetActive(true);
 
-        /*COPY EVERY CONDTION FROM THE LIST TO THE ARRAY*/
-        conditions = new string[conList.Count];
-        for(int i = 0; i < conList.Count; i++)
-        {
-            conditions[i] = conList[i];
-        }
+        condSet.SetConditions(); 
 
         /*WHEN CLOSING THE MENU YOU SHOULD DESTROY EVERY CONTENT OF CHILD, AND RE-ADD THEM LATER WHEN OPENING THE POP UP THROUGH THE EDIT SCREEN*/
         foreach(Transform child in condPopUp.transform.Find("ConditionList").transform.Find("ScrollArea").transform.Find("Content"))
@@ -112,7 +109,7 @@ public class TransitionScript : MonoBehaviour
         newCondition.transform.SetParent(content.transform);
         if(conditionInput.text != "")   
         {
-            conList.Add(conditionInput.text); //add the condition to the list of conditions
+            condSet.GetConditions(conditionInput.text); 
             newCondition.GetComponent<TMP_Text>().text = conditionInput.text;
         }
         conditionInput.text = "";
