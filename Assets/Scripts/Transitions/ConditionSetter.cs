@@ -16,8 +16,6 @@ public class ConditionSetter : MonoBehaviour
         {
             transScript.conditions[i] = list[i];
         }
-
-        //FIND A WAY TO CLEAN CONDITION BUFFER
     }
     
     public void GetConditions(string cond)
@@ -28,5 +26,7 @@ public class ConditionSetter : MonoBehaviour
     public void GetTransition(GameObject newTransition)
     {
         trans = newTransition; 
+        //if the list is not empty -> clear it
+        if(list.Count > 0) list.Clear(); 
     }
 }

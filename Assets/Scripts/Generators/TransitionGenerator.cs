@@ -9,7 +9,7 @@ public class TransitionGenerator : MonoBehaviour
     private  StateGenerator stateGenerator; // Reference to the StateGenerator component.
     private ConditionSetter condSetter; //Reference to the Condition Setter Script
     private EditState editState; //edit state script
-    private int i=0; //debugging purposes
+    private int i=0; //debugging purposes (LEFTOVER FROM TESTING, CAN BE REMOVED, I'M TOO LAZY TO DO IT THOUGH)
     private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint, newTransition; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer || new transition gameObject created
     //private bool exists = false; //check if the transition has been created
     public bool isDragging = false; //check if the transition is still being associated with an end state
@@ -44,7 +44,7 @@ public class TransitionGenerator : MonoBehaviour
         }
     }
 
-    public void CreateTransition()
+    public void CreateTransition() //SHOULD CHECK IF THE TRANSITION ALREADY EXISTS BEFORE CREATING A NEW ONE (TO BE ADDED LATER)
     {
         /*"CLEAN" END POINT BUFFER*/
         end = null;
@@ -69,7 +69,7 @@ public class TransitionGenerator : MonoBehaviour
             isDragging = true;
         }
 
-        UnityEngine.Debug.Log("New transition is not null " + newTransition.name + $" Should be Transition_{i}");
+        //UnityEngine.Debug.Log("New transition is not null " + newTransition.name + $" Should be Transition_{i}");
         i++; 
         //if(newTransition != null) newTransition = null; //"clean" the transition buffer
     }
