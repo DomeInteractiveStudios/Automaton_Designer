@@ -21,7 +21,7 @@ public class TransitionGenerator : MonoBehaviour
 
         stateGenerator = GameObject.Find("ScriptHolder").GetComponent<StateGenerator>(); // Get the StateGenerator script
         condSetter = GameObject.Find("ScriptHolder").GetComponent<ConditionSetter>(); // Get the ConditionSetter script
-        stateHolder = stateGenerator.stateHolder; // Get the stateHolder GameObject from the StateGenerator script
+        stateHolder = GameObject.Find("StateHolder"); // Get the StateHolder gameObject
     }
 
     private void Update()
