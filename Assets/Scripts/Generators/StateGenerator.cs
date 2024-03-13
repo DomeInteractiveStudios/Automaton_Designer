@@ -19,13 +19,14 @@ public class StateGenerator : MonoBehaviour
     [HideInInspector] public int status; //THIS IS TO CHECK IF THE STATE IS TO BE CREATED OR EDITED
     [HideInInspector] public GameObject stateToEdit; //THIS IS TO CHECK WHICH STATE IS TO BE EDITED
     [HideInInspector] public GameObject stateHolder; //GAMEOBJECT THAT HOLDS ALL THE STATES
+    private int i=1; //counts the number of states with no name created
 
     private void Awake()
     {
         statePrefab = Resources.Load<GameObject>("Prefabs/State");
         creationMenu = transform.GetChild(0).Find("CreationMenu").gameObject;
         popUpWindow = GameObject.Find("FixedUI").transform.Find("Canvas").transform.Find("PopUp-Window").gameObject;
-        stateHolder = GameObject.Find("StateHolder");
+        stateHolder = GameObject.Find("State_Holder");
         creationMenu.SetActive(false);
         popUpWindow.SetActive(false);
     }
@@ -96,7 +97,16 @@ public class StateGenerator : MonoBehaviour
         GameObject newState = Instantiate(statePrefab, lastMousePos, Quaternion.identity);
         statePrefabScript = newState.GetComponent<StateScript>();
         newState.transform.SetParent(stateHolder.transform);
-        if(stateName.text == "") statePrefabScript.state.name = "State";
+        if(stateName.text == "" || stateName.text == "State") //custom name for nameless states to be added later
+        {
+            if(i!=1)
+            {
+                statePrefabScript.state.name = $"State {i}";
+            }
+            else statePrefabScript.state.name = "State";
+
+            i++;
+        }
         else statePrefabScript.state.name = stateName.text;
         statePrefabScript.state.type = stateType.value == 0 ? StateScript.StateType.regular : StateScript.StateType.final;
         HidePopUpWindow();
@@ -105,7 +115,16 @@ public class StateGenerator : MonoBehaviour
     private void EditState(GameObject stateToEdit) //EDITS AN EXISTING STATE
     {
         StateScript editScript = stateToEdit.GetComponent<StateScript>();
-        if(stateName.text == "") editScript.state.name = "State";
+        if(stateName.text == "" || stateName.text == "State") //custom name for nameless states to be added later
+        {
+            if(i!=1)
+            {
+                statePrefabScript.state.name = $"State {i}";
+            }
+            else statePrefabScript.state.name = "State";
+
+            i++;
+        }
         else editScript.state.name = stateName.text;
         editScript.state.type = stateType.value == 0 ? StateScript.StateType.regular : StateScript.StateType.final;
         HidePopUpWindow();

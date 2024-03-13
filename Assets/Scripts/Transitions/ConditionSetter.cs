@@ -5,7 +5,8 @@ using UnityEngine;
 public class ConditionSetter : MonoBehaviour
 {
     public List<string> list; //list of conditions
-    private GameObject trans; //transition obj
+    private GameObject trans; //transition obj || end state obj
+    private Transform state; 
     public void SetConditions()
     {
         TransitionScript transScript = trans.GetComponent<TransitionScript>(); 

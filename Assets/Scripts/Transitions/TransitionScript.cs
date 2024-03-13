@@ -27,7 +27,7 @@ public class TransitionScript : MonoBehaviour
         condPopUp = GameObject.Find("FixedUI").transform.Find("Canvas").transform.Find("CondPopUp-Window").gameObject;
         condPopUp.SetActive(false);
         condSet = GameObject.Find("ScriptHolder").transform.GetComponent<ConditionSetter>(); 
-        stateHolder = GameObject.Find("StateHolder");
+        stateHolder = GameObject.Find("State_Holder");
         conditionText = Resources.Load<GameObject>("Prefabs/UI_Elements/ConditionText");
 
         conditionInput = condPopUp.transform.Find("InputCondition").GetComponent<TMP_InputField>();

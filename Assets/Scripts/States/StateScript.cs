@@ -53,8 +53,11 @@ public class StateScript : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if(!transitionGenerator.isDragging) move = true; // Set the move boolean to true.
-        else transitionGenerator.end = transform; // If the transition is being dragged, set the end of the transition to this state.
+        if(Input.GetMouseButtonDown(2) || (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftControl))) // If the right mouse button is clicked or the left mouse button is clicked while holding the left control key.
+        {
+            if(!transitionGenerator.isDragging) move = true; // If the transition is not being dragged, set the move boolean to true.
+            else transitionGenerator.end = transform; // If the transition is being dragged, set the end of the transition to this state.
+        }
     }
 
     public void OnMouseUp()
