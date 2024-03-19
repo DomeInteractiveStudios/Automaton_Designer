@@ -17,7 +17,7 @@ public class RemoveConditions : MonoBehaviour
 
     private void Update()
     {
-        UnityEngine.Debug.Log("Hovering: " + conditionText.text + " -> " + hover);
+        //UnityEngine.Debug.Log("Hovering: " + conditionText.text + " -> " + hover);
 
         if(selected)
         {

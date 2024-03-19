@@ -122,8 +122,6 @@ public class StateGenerator : MonoBehaviour
                 statePrefabScript.state.name = $"State {i}";
             }
             else statePrefabScript.state.name = "State";
-
-            i++;
         }
         else editScript.state.name = stateName.text;
         editScript.state.type = stateType.value == 0 ? StateScript.StateType.regular : StateScript.StateType.final;
