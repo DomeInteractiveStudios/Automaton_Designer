@@ -30,4 +30,9 @@ public class ConditionSetter : MonoBehaviour
         //if the list is not empty -> clear it
         if(list.Count > 0) list.Clear(); 
     }
+
+    public void RemoveCondition(string cond)
+    {
+        list.Remove(cond); 
+    }
 }

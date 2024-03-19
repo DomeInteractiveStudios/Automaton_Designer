@@ -234,6 +234,7 @@ MonoBehaviour:
   isAuto: 0
   goUnder: 0
   conditionVisual: {fileID: 4693721399686284859}
+  outputMousePos: 0
 --- !u!120 &7337271423508617563
 LineRenderer:
   m_ObjectHideFlags: 0

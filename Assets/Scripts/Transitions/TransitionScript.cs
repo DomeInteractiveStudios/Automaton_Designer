@@ -20,6 +20,13 @@ public class TransitionScript : MonoBehaviour
     private Button addConditionButton, submitButton; //add condition button
     private List<string> conList = new List<string>(); //list of conditions
     private List<GameObject> transList = new List<GameObject>(); //list of transitions
+    private bool canEdit = false; //check if the user can edit the conditions
+    
+    
+    [Header("Debugging")]
+    [SerializeField] private bool outputMousePos; //output the mouse position
+    //private int d=0; //debugging purposes
+    private Vector3 curMousePos, prevMousePos; //current mouse position
 
     private void Awake()
     {   
@@ -43,6 +50,40 @@ public class TransitionScript : MonoBehaviour
         /*CHECKS*/
         if(states[0].transform.position.x < states[2].transform.position.x) goUnder = true;
         else goUnder = false;
+
+        //check if mouse in over the line renderer
+        if(lineRenderer != null)
+        {
+            /*if(d==0)
+            {
+                UnityEngine.Debug.Log("Line Renderer is not null");
+                d++; 
+            }*/
+            
+            if((curMousePos != prevMousePos) && outputMousePos)
+            {
+                UnityEngine.Debug.Log("Previous Mouse Pos: " + prevMousePos);
+                prevMousePos = curMousePos;
+                UnityEngine.Debug.Log("Current Mouse Pos: " + curMousePos);
+            }
+            else
+            {
+                curMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+                curMousePos.z = 0; 
+            }
+
+            if(lineRenderer.bounds.Contains(curMousePos)) canEdit = true;
+            else canEdit = false;
+        }
+
+        if(canEdit && (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.LeftControl)))
+        {
+            OpenConditionMenu();
+        }
+        if(canEdit && (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl)))
+        {
+            DestroyTransition();
+        }
         /*CHECKS*/
     }
 
@@ -84,6 +125,21 @@ public class TransitionScript : MonoBehaviour
     {
         condPopUp.SetActive(true);
         stateHolder.SetActive(false);
+
+        /*IF THE TRANSITION HAS CONDITIONS, ADD THEM TO THE CONDITION LIST*/
+        if(conditions.Length != 0)
+        {
+            conditionVisual.text = ""; 
+            foreach(string cond in conditions)
+            {
+                GameObject content = condPopUp.transform.Find("ConditionList").transform.Find("ScrollArea").transform.Find("Content").gameObject;
+                GameObject newCondition = Instantiate(conditionText, content.transform.position, content.transform.rotation);
+                newCondition.transform.Rotate(0, 0, 0);
+                newCondition.transform.localScale = newCondition.transform.localScale/50;
+                newCondition.transform.SetParent(content.transform);
+                newCondition.GetComponent<TMP_Text>().text = cond;
+            }
+        }
     }
 
     private void CloseConditionMenu()
