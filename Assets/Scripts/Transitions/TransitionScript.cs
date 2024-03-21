@@ -21,6 +21,8 @@ public class TransitionScript : MonoBehaviour
     private List<string> conList = new List<string>(); //list of conditions
     private List<GameObject> transList = new List<GameObject>(); //list of transitions
     private bool canEdit = false; //check if the user can edit the conditions
+    private Vector3 menuPos; //position of the condition pop up window
+    private float saveSize; //save the size of the camera
     
     
     [Header("Debugging")]
@@ -47,6 +49,8 @@ public class TransitionScript : MonoBehaviour
 
     private void Update()
     {
+        condPopUp.transform.position = menuPos; //make the menu follow the camera
+
         /*CHECKS*/
         if(states[0].transform.position.x < states[2].transform.position.x) goUnder = true;
         else goUnder = false;
@@ -89,6 +93,9 @@ public class TransitionScript : MonoBehaviour
 
     private void LateUpdate()
     {
+        menuPos = Camera.main.transform.position;
+        menuPos.z = 0;
+
         if(!isAuto)
         {
             if(goUnder) states[1].transform.position = new Vector3((states[0].transform.position.x + states[2].transform.position.x) / 2, (states[0].transform.position.y + states[2].transform.position.y) - midPointOffset, 0);
@@ -125,6 +132,8 @@ public class TransitionScript : MonoBehaviour
     {
         condPopUp.SetActive(true);
         stateHolder.SetActive(false);
+        saveSize = Camera.main.orthographicSize;
+        Camera.main.orthographicSize = 5f;
 
         /*IF THE TRANSITION HAS CONDITIONS, ADD THEM TO THE CONDITION LIST*/
         if(conditions.Length != 0)
@@ -146,6 +155,7 @@ public class TransitionScript : MonoBehaviour
     {
         condPopUp.SetActive(false);
         stateHolder.SetActive(true);
+        Camera.main.orthographicSize = saveSize;
 
         condSet.SetConditions(); 
 

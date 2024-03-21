@@ -20,6 +20,8 @@ public class StateGenerator : MonoBehaviour
     [HideInInspector] public GameObject stateToEdit; //THIS IS TO CHECK WHICH STATE IS TO BE EDITED
     [HideInInspector] public GameObject stateHolder; //GAMEOBJECT THAT HOLDS ALL THE STATES
     private int i=1; //counts the number of states with no name created
+    private Vector3 menuPos; //position of the creation menu
+    private float saveSize; //save the size of the camera
 
     private void Awake()
     {
@@ -32,7 +34,9 @@ public class StateGenerator : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canCreate && !menuShown) //SHOW THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
+        popUpWindow.transform.position = menuPos; //make the menu follow the camera
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && canCreate && !menuShown && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) //SHOW THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
         {
             ShowCreationMenu(); 
         }
@@ -47,6 +51,12 @@ public class StateGenerator : MonoBehaviour
         /*SUBMIT BUTTON TEXT*/
     }
 
+    private void LateUpdate()
+    {
+        menuPos = Camera.main.transform.position;
+        menuPos.z = 0;
+    }
+
     public void GenerateState() //THIS EVENT IS TRIGGERED BY THE CREATE A NEW STATE BUTTON
     {
         ShowPopUpWindow(); 
@@ -56,6 +66,7 @@ public class StateGenerator : MonoBehaviour
     private void ShowCreationMenu() //SHOWS THE CREATE A NEW STATE BUTTON 
     {
         creationMenu.SetActive(true);
+        saveSize = Camera.main.orthographicSize;
         lastMousePos = creationMenu.transform.position;
         menuShown = true;
     }
@@ -69,12 +80,14 @@ public class StateGenerator : MonoBehaviour
     public void ShowPopUpWindow() //SHOW STATE CREATION WINDOW
     {
         popUpWindow.SetActive(true);
+        Camera.main.orthographicSize = 5f;
         stateHolder.SetActive(false);
     }   
 
     private void HidePopUpWindow() //SHOW STATE CREATION WINDOW
     {
         popUpWindow.SetActive(false);
+        Camera.main.orthographicSize = saveSize;
         stateHolder.SetActive(true);
     }
 
