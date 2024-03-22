@@ -350,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7f914ab4991ff4e8a4edfed7ec2852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSet: 0
 --- !u!120 &7595708114782219037
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -443,7 +444,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
-    alignment: 0
+    alignment: 1
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0

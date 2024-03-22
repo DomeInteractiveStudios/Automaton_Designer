@@ -6,7 +6,7 @@ public class EditState : MonoBehaviour
 {
     private StateGenerator stateGenerator;
     [HideInInspector] public GameObject EditStateOptions; 
-    private bool canEdit = false; 
+    private bool canEdit = false, menuOpen = false; 
 
     private void Awake() //FIND THE STATE GENERATOR SCRIPT
     {
@@ -22,10 +22,21 @@ public class EditState : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1) && canEdit)
         {
             EditStateOptions.SetActive(true);
+            menuOpen = true;
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1) && !canEdit)
         {
             EditStateOptions.SetActive(false);
+            menuOpen = false;
+        }
+
+        /*DELETE STATE*/
+        if(menuOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

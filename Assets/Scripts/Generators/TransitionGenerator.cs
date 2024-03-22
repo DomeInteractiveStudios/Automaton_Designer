@@ -9,7 +9,7 @@ public class TransitionGenerator : MonoBehaviour
     private  StateGenerator stateGenerator; // Reference to the StateGenerator component.
     private ConditionSetter condSetter; //Reference to the Condition Setter Script
     private EditState editState; //edit state script
-    private int i=0; //debugging purposes (LEFTOVER FROM TESTING, CAN BE REMOVED, I'M TOO LAZY TO DO IT THOUGH)
+    private int i=0; //debugging purposes (LEFTOVER FROM TESTING, CAN BE REMOVED, I'M TOO LAZY TO DO IT THOUGH) -> PS: I USED IT TO COUNT THE NUMBER OF TRANSITIONS CREATED
     private GameObject transitionPrefab, stateHolder, pointerFollower, middlePoint, newTransition; //transition prefab || state parent gameObject || invisible object that follows the mouse pointer || middle point of the line renderer || new transition gameObject created
     //private bool exists = false; //check if the transition has been created
     public bool isDragging = false;  //check if the transition is still being associated with an end state
@@ -90,13 +90,16 @@ public class TransitionGenerator : MonoBehaviour
         if(end == null) transitionScript.DestroyTransition(); //this has to be checked before the second if otherwise the script will not know what end is
         //and will send an error before even reaching the destroy transition function, so it can't be set as the else of the second if
 
-        if(end!=null && hit.collider.tag == "State")
+        if(end!=null)
         {
-            transitionScript.states[2] = end.gameObject; //set the end position of the line renderer
-        }
-        if(transitionScript.states[0] == transitionScript.states[2]) CreateAutoTransition();
+            if(hit.collider.tag == "State")
+            {
+                transitionScript.states[2] = end.gameObject; //set the end position of the line renderer
+            }
+            if(transitionScript.states[0] == transitionScript.states[2]) CreateAutoTransition();
 
-        transitionScript.OpenConditionMenu();
+            transitionScript.OpenConditionMenu();
+        }
     }
 
     private int CountStates()
