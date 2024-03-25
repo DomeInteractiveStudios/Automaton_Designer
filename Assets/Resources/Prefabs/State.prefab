@@ -1073,6 +1073,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: a866bbbc459681e4a90c19e04a014609, type: 3}
   - {fileID: 21300000, guid: 62ce76dda65da2d4c84b56ddf680989b, type: 3}
+  checks: {fileID: 11400000, guid: 5a429f735ed0b454cad074126a87545f, type: 2}
 --- !u!114 &3405032424405567656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1086,6 +1087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EditStateOptions: {fileID: 0}
+  checks: {fileID: 11400000, guid: 5a429f735ed0b454cad074126a87545f, type: 2}
 --- !u!114 &3991472773421927729
 MonoBehaviour:
   m_ObjectHideFlags: 0

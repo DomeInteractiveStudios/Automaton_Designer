@@ -22,6 +22,7 @@ public class StateGenerator : MonoBehaviour
     private int i=1; //counts the number of states with no name created
     private Vector3 menuPos; //position of the creation menu
     private float saveSize; //save the size of the camera
+    [SerializeField] private Checks checks; // Reference to the Checks scriptable object.
 
     private void Awake()
     {
@@ -34,21 +35,24 @@ public class StateGenerator : MonoBehaviour
     }
     private void Update()
     {
-        popUpWindow.transform.position = menuPos; //make the menu follow the camera
-
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canCreate && !menuShown && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) //SHOW THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
+        if(checks.canModify)
         {
-            ShowCreationMenu(); 
-        }
-        else if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Mouse2)) && menuShown) //HIDE THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
-             {
-                 HideCreationMenu();
-             }
+            popUpWindow.transform.position = menuPos; //make the menu follow the camera
 
-        /*SUBMIT BUTTON TEXT*/
-        if(status == 0) submitText.text = "Create State";
-        else if(status == 1) submitText.text = "Edit State";
-        /*SUBMIT BUTTON TEXT*/
+            if (Input.GetKeyDown(KeyCode.Mouse1) && canCreate && !menuShown && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) //SHOW THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
+            {
+                ShowCreationMenu(); 
+            }
+            else if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Mouse2)) && menuShown) //HIDE THE CREATE A NEW STATE BUTTON ON MOUSE CLICK
+                {
+                    HideCreationMenu();
+                }
+
+            /*SUBMIT BUTTON TEXT*/
+            if(status == 0) submitText.text = "Create State";
+            else if(status == 1) submitText.text = "Edit State";
+            /*SUBMIT BUTTON TEXT*/
+        }
     }
 
     private void LateUpdate()

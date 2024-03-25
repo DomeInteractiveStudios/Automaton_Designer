@@ -24,6 +24,7 @@ public class StateScript : MonoBehaviour
     [SerializeField] private Sprite[] sprites; // Array of Sprites. Each sprite is a diffrent state
     private bool move = false; // Boolean to check if the state is moving or not.
     private Vector3 mousePosition; // The target position of the state. 
+    [SerializeField] private Checks checks; // Reference to the Checks scriptable object.
 
     private void Awake()
     {
@@ -34,35 +35,45 @@ public class StateScript : MonoBehaviour
 
     private void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Get the mouse position in the world space.
+        if(checks.canModify) // If the state can be modified
+        {
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Get the mouse position in the world space.
 
-        if(state.type == StateType.final)
-        {
-            spriteRenderer.sprite = sprites[1]; // Set the sprite to the final state sprite
-        }
-        if(state.type == StateType.regular)
-        {
-            spriteRenderer.sprite = sprites[0]; // Set the sprite to the regular state sprite
+            if(state.type == StateType.final)
+            {
+                spriteRenderer.sprite = sprites[1]; // Set the sprite to the final state sprite
+            }
+            if(state.type == StateType.regular)
+            {
+                spriteRenderer.sprite = sprites[0]; // Set the sprite to the regular state sprite
+            }
         }
     }
 
     private void LateUpdate()
     {
-        if(move) transform.position = new Vector3(mousePosition.x, mousePosition.y, 0); // Move the state to the mouse position.
+        if(move && checks.canModify) transform.position = new Vector3(mousePosition.x, mousePosition.y, 0); // Move the state to the mouse position.
     }
 
     public void OnMouseDown()
     {
-        if(Input.GetMouseButtonDown(2) || (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftControl))) // If the right mouse button is clicked or the left mouse button is clicked while holding the left control key.
+        if(checks.canModify)
         {
-            if(!transitionGenerator.isDragging) move = true; // If the transition is not being dragged, set the move boolean to true.
-            else transitionGenerator.end = transform; // If the transition is being dragged, set the end of the transition to this state.
+            if(Input.GetMouseButtonDown(2) || (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftControl))) // If the right mouse button is clicked or the left mouse button is clicked while holding the left control key.
+            {
+                if(!transitionGenerator.isDragging) move = true; // If the transition is not being dragged, set the move boolean to true.
+                else transitionGenerator.end = transform; // If the transition is being dragged, set the end of the transition to this state.
+            }
         }
+        
     }
 
     public void OnMouseUp()
     {
-        move = false; // Set the move boolean to false. (no check is needed because move will raemin false if it's already false, and will be set to false if it's true, either way it will be false)
-        if(transitionGenerator.isDragging) transitionGenerator.EndDragging(); // If the transition is being dragged, end the dragging.
-    }//THIS WORKS FOR AUTO TRANSITIONS, BUT NOT FOR TRANSTION BETWEEN DIFFRENT STATES BECAUSE GENERATOR SCRIPT IN NOT ATTACHED TO THE SECOND STATE, SO FIRST STATE SHOULD GET OBJECT THAT'S BEEN CLICKED ON AND THEN CREATE TRANSITION TO IT
+        if(checks.canModify)
+        {
+            move = false; // Set the move boolean to false. (no check is needed because move will raemin false if it's already false, and will be set to false if it's true, either way it will be false)
+            if(transitionGenerator.isDragging) transitionGenerator.EndDragging(); // If the transition is being dragged, end the dragging.
+        }
+    }
 }
