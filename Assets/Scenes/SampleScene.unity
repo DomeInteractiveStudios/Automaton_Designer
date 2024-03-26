@@ -1146,6 +1146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6961d799e0e42549a03a5794b99d567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checks: {fileID: 11400000, guid: 5a429f735ed0b454cad074126a87545f, type: 2}
 --- !u!114 &1702788562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1235,6 +1236,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3058087272936286728, guid: 58df3b5e9daadf34287ad58df3f4d563, type: 3}
+      propertyPath: checks
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a429f735ed0b454cad074126a87545f, type: 2}
     - target: {fileID: 3058087272936286728, guid: 58df3b5e9daadf34287ad58df3f4d563, type: 3}
       propertyPath: stateName
       value: 

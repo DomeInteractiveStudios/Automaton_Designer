@@ -18,9 +18,12 @@ public class FSA : MonoBehaviour
     [Header("Console Logs")]
     private GameObject consoleMenu, console, conErr, conSuc, executeButton; //console || console area || console error message || console success message || execute automaton button
     private bool consoleOpen = false; //is the console open?
+    private string stateName, childName; //state name and child name
 
     [Header("General References")]
     private GameObject stateHolder; //gameobject that holds all the states
+    private Button execBtn; //button to execute the automaton
+    private TMP_InputField inputString; //input field to enter the string to be checked
     private List <string> conditions = new List<string>(); //list of all conditions on a state
 
     private void Awake()
@@ -65,6 +68,7 @@ public class FSA : MonoBehaviour
     {
         consoleMenu.SetActive(false);
         consoleOpen = false;
+        checks.canModify = true;
         //delete all logs
         foreach (Transform child in console.transform)
         {
@@ -129,24 +133,91 @@ public class FSA : MonoBehaviour
             PrintSuccess("Automaton can be executed");
 
             //show execute button
-            GameObject execBtn = Instantiate(executeButton, console.transform);
-            execBtn.transform.Rotate(0, 0, 0);
-            execBtn.transform.SetParent(console.transform);
-            execBtn.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ExecuteAutomaton);
+            GameObject execPF = Instantiate(executeButton, console.transform);
+            execPF.transform.Rotate(0, 0, 0);
+            execPF.transform.SetParent(console.transform);
+            execBtn = execPF.transform.GetChild(0).GetComponent<Button>();
+            execBtn.onClick.AddListener(ExecuteAutomaton);
+            inputString = execPF.transform.GetChild(1).GetComponent<TMP_InputField>();
         }
     }
 
     private void ExecuteAutomaton()
     {
-        //execute the automaton
-        CloseConsole();
-        //freeze input util execution is done
-        checks.canModify = false;
+        if(inputString.text == "")
+        {
+            PrintError("No string entered");
+            return;
+        }
+        else
+        {
+            //execute the automaton
+            CloseConsole();
+            //freeze input util execution is done
+            checks.canModify = false;
+            char[] input = inputString.text.ToCharArray();
+            //start the execution
+            //find the starting state
+            GameObject startState = entryTransition.firstState;
+            StartCoroutine(Execute(startState, input, 0));
+        }
     }   
 
     private void EndExecution()
     {
         //unfreeze input
         checks.canModify = true;
+        //Open the console
+        OpenConsole();
+    }
+
+    IEnumerator Execute(GameObject state, char[] input, int index)
+    {
+        yield return new WaitForSeconds(0.2f); //change to to custom speed later
+        if(index == input.Length)
+        {
+            //check if the state is a final state
+            if(state.GetComponent<StateScript>().state.type == StateScript.StateType.final)
+            {
+                PrintSuccess("String accepted\n================================");
+            }
+            else
+            {
+                PrintError("String not accepted\n================================");
+            }
+            EndExecution();
+            yield break;
+        }
+        else
+        {
+            //check if the state has a transition with the current input
+            for(int i=0; i<state.transform.childCount; i++)
+            {
+                Transform child = state.transform.GetChild(i);
+                stateName = state.GetComponent<StateScript>().state.name;
+                childName = child.GetComponent<TransitionScript>().states[2].GetComponent<StateScript>().state.name;
+                if(child.name.Contains("Transition"))
+                {
+                    for(int j=0; j<child.GetComponent<TransitionScript>().conditions.Length; j++)
+                    {
+                        if(child.GetComponent<TransitionScript>().conditions[j] == input[index].ToString())
+                        {
+                            //transition found
+                            PrintSuccess("Transition from ''" + stateName + "'' to ''" + childName + "'' with condition ''" + input[index] + "''");
+                            
+                            if(state != child.GetComponent<TransitionScript>().states[2]) StartCoroutine(Execute(child.GetComponent<TransitionScript>().states[2], input, index+1));
+                            else StartCoroutine(Execute(state, input, index+1));//loop transition
+                            yield break;
+                        }
+                    }
+                }
+            }
+            //no transition found
+            PrintError("No transition from ''" + stateName + "'' with condition ''" + input[index] + "''");
+            PrintError("String not accepted\n================================");
+            i=0; //reset the error counter
+            EndExecution();
+            yield break;
+        }
     }
 }

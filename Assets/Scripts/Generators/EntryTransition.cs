@@ -10,6 +10,7 @@ public class EntryTransition : MonoBehaviour
     private bool isDragging; 
     private RaycastHit2D hit; //raycast hit
     [HideInInspector] public bool isSet = false; //is the transition set?
+    [HideInInspector] public GameObject firstState; //first state of the transition
 
     private void Awake()
     {
@@ -61,6 +62,7 @@ public class EntryTransition : MonoBehaviour
     private void SetEnd(Transform end)
     {
         points[1] = end;
+        firstState = points[1].gameObject;
         isDragging = false;
     }
 }

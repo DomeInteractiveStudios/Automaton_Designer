@@ -36,7 +36,7 @@ public class EditState : MonoBehaviour
             /*DELETE STATE*/
             if(menuOpen)
             {
-                if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
+                if (Input.GetKeyDown(KeyCode.Delete) || (Input.GetKeyDown(KeyCode.Backspace) && Input.GetKey(KeyCode.LeftAlt)))
                 {
                     Destroy(gameObject);
                 }
