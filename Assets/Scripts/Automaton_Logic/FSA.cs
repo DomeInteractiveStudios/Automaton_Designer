@@ -46,11 +46,6 @@ public class FSA : MonoBehaviour
         consoleMenu.SetActive(false);
     }
 
-    private void Update()
-    {
-
-    }
-
     private void OpenConsole()
     {
         if(!consoleOpen)
@@ -195,18 +190,17 @@ public class FSA : MonoBehaviour
             {
                 Transform child = state.transform.GetChild(i);
                 stateName = state.GetComponent<StateScript>().state.name;
-                childName = child.GetComponent<TransitionScript>().states[2].GetComponent<StateScript>().state.name;
                 if(child.name.Contains("Transition"))
                 {
                     for(int j=0; j<child.GetComponent<TransitionScript>().conditions.Length; j++)
                     {
+                        childName = state.GetComponent<TransitionGenerator>().end.GetComponent<StateScript>().state.name;
                         if(child.GetComponent<TransitionScript>().conditions[j] == input[index].ToString())
                         {
                             //transition found
                             PrintSuccess("Transition from ''" + stateName + "'' to ''" + childName + "'' with condition ''" + input[index] + "''");
                             
-                            if(state != child.GetComponent<TransitionScript>().states[2]) StartCoroutine(Execute(child.GetComponent<TransitionScript>().states[2], input, index+1));
-                            else StartCoroutine(Execute(state, input, index+1));//loop transition
+                            StartCoroutine(Execute(state.GetComponent<TransitionGenerator>().end.gameObject, input, index+1));
                             yield break;
                         }
                     }

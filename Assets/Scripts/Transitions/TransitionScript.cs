@@ -8,6 +8,7 @@ public class TransitionScript : MonoBehaviour
 {
     public GameObject[] states = new GameObject[3]; // 0 = start, 1 = middle, 2 = end
     [HideInInspector] public float midPointOffset; //offset of the middle point from the start and end points
+    [HideInInspector] public GameObject target; //offset of the middle point from the start and end points
     public string[] conditions; //list of conditions to be met for the state to follow this transition
     [HideInInspector] public bool isAuto = false, goUnder = false; //check if the transition is an auto transition || check if the middle point should go under the states
     private ConditionSetter condSet; 

@@ -119,6 +119,7 @@ public class TransitionGenerator : MonoBehaviour
         transitionScript.states[0] = transform.Find("AutoTransStart").gameObject;
         transitionScript.states[1] = transform.Find("AutoTransMid").gameObject;
         transitionScript.states[2] = transform.Find("AutoTransEnd").gameObject;
+        end = this.transform;    
 
         /*CHANGE THE POSTION OF THE LINE RENDERER POINTS, SO THAT YOU CAN CREATE AN ARCH FROM THE STATE TO ITSELF*/
         transitionScript.states[0].transform.position = new Vector3(transitionScript.states[0].transform.position.x + 0.5f, transitionScript.states[0].transform.position.y, 0);
